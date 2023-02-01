@@ -193,7 +193,6 @@ pArbre doubleRotationDroite(pArbre a)
 }
 
 
-// cette fonction est sur le modèle du cours mais je l'ai pas tester donc je sais pas si elle marche bien
 pArbre insertAVL(pArbre a, int e, int *h)
 {
 	// h difference d'équilibre
@@ -232,7 +231,6 @@ pArbre insertAVL(pArbre a, int e, int *h)
 }
 
 
-// je l'ai trouvé sur internet elle marche bien et fait le réequilibrage automatiquement
 pArbre insert(pArbre root, int data)
 
 {
@@ -320,90 +318,3 @@ pArbre insert(pArbre root, int data)
 	return root;
 }
 
-int main(int argc, char **argv)
-{
-	/*pArbre AVL1 = creerArbre(10);
-	pArbre p1 = AVL1;
-	ajouterFilsGauche(AVL1,5);
-	ajouterFilsDroit(AVL1, 15);
-	p1 = p1->fg;
-	ajouterFilsGauche(p1, 3);
-	ajouterFilsDroit(p1, 7);
-	p1 = p1->fd;
-	ajouterFilsDroit(p1, 9);
-	p1 = AVL1->fd;
-	ajouterFilsDroit(p1, 20);
-	ajouterFilsGauche(p1, 12);
-
-
-
-	pArbre AVL2 = creerArbre(9);
-	ajouterFilsGauche(AVL2, 5);
-	ajouterFilsDroit(AVL2, 20);
-	p1 = AVL2 -> fg;
-	ajouterFilsGauche(p1, 3);
-	ajouterFilsDroit(p1, 7);
-	p1 = AVL2->fd;
-	ajouterFilsGauche(p1, 15);
-	ajouterFilsGauche(p1->fg, 12);
-	p1 = p1->fg;
-	ajouterFilsGauche(p1->fg, 10);
-
-	// display AVL1
-	SPACE;
-	parcoursInfixe(AVL1);
-
-	SPACE;
-	parcoursInfixe(AVL2);*/
-
-	// rotation simple test OK
-	/*pArbre AVL3 = creerArbre(1);
-	ajouterFilsDroit(AVL3,2);
-	ajouterFilsDroit(AVL3->fd,3);
-
-	AVL3->eq = 2;
-	AVL3->fd->eq = 1;
-	AVL3->fd->fd->eq = 0;
-	SPACE;
-	printf("%d %d %d",AVL3->elmt, AVL3->fd->elmt,AVL3->fd->fd->elmt);
-	SPACE;
-	AVL3 = rotationGauche(AVL3);
-	SPACE;
-
-	printf("%d %d %d",AVL3->fg->elmt, AVL3->elmt,AVL3->fd->elmt);
-	AVL3 = rotationGauche(AVL3);
-	SPACE;
-	printf("%d %d %d",AVL3->fg->fg->elmt, AVL3->fg->elmt,AVL3->elmt);*/
-
-	// rotation double test
-	pArbre AVL = creerArbre(10);
-	ajouterFilsGauche(AVL, 5);
-	ajouterFilsDroit(AVL, 20);
-	ajouterFilsDroit(AVL->fd, 26);
-	ajouterFilsGauche(AVL->fd, 15);
-	ajouterFilsDroit(AVL->fd->fg, 17);
-	ajouterFilsGauche(AVL->fd->fg, 13);
-
-	AVL->eq = 2;
-	AVL->fg->eq = 0;
-	AVL->fd->eq = -1;
-	AVL->fd->fg->eq = 0;
-	AVL->fd->fd->eq = 0;
-	AVL->fd->fg->fd->eq = 0;
-	AVL->fd->fg->fg->eq = 0;
-	parcoursInfixe(AVL);
-	AVL = doubleRotationGauche(AVL);
-	SPACE;
-	// AVL->fd = rotationDroite(AVL->fd);
-	parcoursInfixe(AVL);
-	SPACE;
-	printf("%d %d", AVL->fd->elmt, AVL->fd->eq);
-	int *equilibre = malloc(sizeof(int));
-	AVL = insertAVL(AVL, 12, equilibre);
-	SPACE;
-	parcoursInfixe(AVL);
-	SPACE;
-	printf("%d %d", AVL->fg->fd->fg->elmt, AVL->fg->fd->fg->eq);
-
-	return 0;
-}
