@@ -15,15 +15,15 @@ typedef Pile* PPile;
 /*********************************
 * Prototypes ABR
 */
-PArbre RechercheABR(PArbre , Element );
-PArbre InsereABR(PArbre , Element );
-PArbre InsereABRIteratif(PArbre , Element );
-PArbre SuppMax(PArbre , Element *);
-PArbre SuppABR(PArbre , Element );
-bool estUnABR(PArbre );
-PArbre calculHauteursABR(PArbre );
-PArbre calculEquilibresABR(PArbre );
-PPile ABtoPile(PArbre , PPile );
-bool estUnABR(PArbre );
+PArbre researchABR(PTree , Element );
+PArbre InsereABR(PTree , Element );
+PArbre InsereABRIteratif(PTree , Element );
+PArbre SuppMax(PTree , Element *);
+PArbre SuppABR(PTree , Element );
+bool isABR(PTree );
+PArbre calculHauteursABR(PTree );
+PArbre calculEquilibresABR(PTree );
+PPile ABtoPile(PTree , PPile );
+bool isABR(PTree );
 
 #endif
