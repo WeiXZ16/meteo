@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #define SPACE puts ("\n")
 
-typedef struct arbre
+typedef struct tree
 {
 	int elmt;
-	struct arbre *fg;
-	struct arbre *fd;
+	struct tree *fg;
+	struct tree *fd;
 	int eq;
-} Arbre;
+} Tree;
 
-typedef Arbre *pArbre;
+typedef Tree *pTree;
 
-pArbre creerArbre(int a)
+pArbre createTree(int a)
 {
-	pArbre pnew = malloc(sizeof(Arbre));
+	pTree pnew = malloc(sizeof(Tree));
 	if (pnew == NULL)
 	{
 		exit(1);
@@ -26,13 +26,13 @@ pArbre creerArbre(int a)
 	return pnew;
 }
 
-void ajouterFilsGauche(pArbre a, int e)
+void addLeftChild(pTree a, int e)
 {
 	if (a == NULL)
 	{
 		exit(1);
 	}
-	a->fg = creerArbre(e);
+	a->fg = createTree(e);
 	if (a->fg == NULL)
 	{
 		exit(2);
@@ -40,13 +40,13 @@ void ajouterFilsGauche(pArbre a, int e)
 	a->eq -= 1;
 }
 
-void ajouterFilsDroit(pArbre a, int e)
+void addRightChildt(pArbre a, int e)
 {
 	if (a == NULL)
 	{
 		exit(1);
 	}
-	a->fd = creerArbre(e);
+	a->fd = creatTree(e);
 	if (a->fd == NULL)
 	{
 		exit(2);
@@ -54,12 +54,12 @@ void ajouterFilsDroit(pArbre a, int e)
 	a->eq += 1;
 }
 
-void traiter(pArbre a)
+void traiter(pTree a)
 {
 	printf("%d,", a->elmt);
 }
 
-void parcoursInfixe(pArbre a)
+void parcoursInfixe(pTree a)
 {
 	if (a != NULL)
 	{
@@ -69,7 +69,7 @@ void parcoursInfixe(pArbre a)
 	}
 }
 
-void parcoursPrefixe(pArbre a)
+void parcoursPrefixe(pTree a)
 {
 	// RGD
 	if (a != NULL)
@@ -80,7 +80,7 @@ void parcoursPrefixe(pArbre a)
 	}
 }
 
-void parcoursPostfixe(pArbre a)
+void parcoursPostfixe(pTree a)
 {
 	// GrD
 
@@ -148,9 +148,9 @@ int max2(int a, int b, int c)
 	}
 }
 
-pArbre rotationGauche(pArbre a)
+pArbre rotLeft(pArbre a)
 {
-	pArbre pivot;
+	pTree pivot;
 	int eq_a;
 	int eq_p;
 	pivot = a->fd;
@@ -164,9 +164,9 @@ pArbre rotationGauche(pArbre a)
 	return pivot;
 }
 
-pArbre rotationDroite(pArbre a)
+pArbre rotRight(pArbre a)
 {
-	pArbre pivot;
+	pTree pivot;
 	int eq_a;
 	int eq_p;
 	pivot = a->fg;
@@ -180,26 +180,25 @@ pArbre rotationDroite(pArbre a)
 	return pivot;
 }
 
-pArbre doubleRotationGauche(pArbre a)
+pArbre doubleRotLeft(pTree a)
 {
-	a->fd = rotationDroite(a->fd);
-	return rotationGauche(a);
+	a->fd = rotRight(a->fd);
+	return rotLeft(a);
 }
 
-pArbre doubleRotationDroite(pArbre a)
+pArbre doubleRotRight(pTree a)
 {
-	a->fg = rotationGauche(a->fg);
-	return rotationDroite(a);
+	a->fg = rotLeft(a->fg);
+	return rotRight(a);
 }
 
 
 pArbre insertAVL(pArbre a, int e, int *h)
 {
-	// h difference d'équilibre
 	if (a == NULL)
 	{
 		*h = 1;
-		return creerArbre(e);
+		return createTree(e);
 	}
 	else if (e < a->elmt)
 	{
@@ -231,7 +230,7 @@ pArbre insertAVL(pArbre a, int e, int *h)
 }
 
 
-pArbre insert(pArbre root, int data)
+pArbre insert(pTree root, int data)
 
 {
 
@@ -239,7 +238,7 @@ pArbre insert(pArbre root, int data)
 
 	{
 
-		pArbre new_node = creerArbre(data);
+		pTree new_node = createTree(data);
 
 		if (new_node == NULL)
 
@@ -269,16 +268,16 @@ pArbre insert(pArbre root, int data)
 
 			{
 
-				root = rotationGauche(root);
+				root = rotLeft(root);
 			}
 
 			else
 
 			{
 
-				root->fd = rotationDroite(root->fd);
+				root->fd = rotRighte(root->fd);
 
-				root = rotationGauche(root);
+				root = rotLeft(root);
 			}
 		}
 	}
@@ -301,16 +300,16 @@ pArbre insert(pArbre root, int data)
 
 			{
 
-				root = rotationDroite(root);
+				root = rotRight(root);
 			}
 
 			else
 
 			{
 
-				root->fg = rotationGauche(root->fg);
+				root->fg = rotLeft(root->fg);
 
-				root = rotationDroite(root);
+				root = rotRight(root);
 			}
 		}
 	}
