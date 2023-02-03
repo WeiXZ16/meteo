@@ -2,21 +2,16 @@
 #include <stdlib.h>
 #define SPACE puts ("\n")
 
-typedef struct tree
-{
+typedef struct tree{
 	int elmt;
 	struct tree *fg;
 	struct tree *fd;
 	int eq;
-} Tree;
+}Tree;
 
-typedef Tree *pTree;
-
-pArbre createTree(int a)
-{
+pArbre createTree(int a){
 	pTree pnew = malloc(sizeof(Tree));
-	if (pnew == NULL)
-	{
+	if (pnew == NULL){
 		exit(1);
 	}
 	pnew->elmt = a;
@@ -26,51 +21,41 @@ pArbre createTree(int a)
 	return pnew;
 }
 
-void addLeftChild(pTree a, int e)
-{
-	if (a == NULL)
-	{
+void addLeftChild(pTree a, int e){
+	if (a == NULL){
 		exit(1);
 	}
 	a->fg = createTree(e);
-	if (a->fg == NULL)
-	{
+	if (a->fg == NULL){
 		exit(2);
 	}
 	a->eq -= 1;
 }
 
-void addRightChildt(pArbre a, int e)
-{
-	if (a == NULL)
-	{
+void addRightChildt(pArbre a, int e){
+	if (a == NULL){
 		exit(1);
 	}
 	a->fd = creatTree(e);
-	if (a->fd == NULL)
-	{
+	if (a->fd == NULL){
 		exit(2);
 	}
 	a->eq += 1;
 }
 
-void traiter(pTree a)
-{
+void traiter(pTree a){
 	printf("%d,", a->elmt);
 }
 
-void parcoursInfixe(pTree a)
-{
-	if (a != NULL)
-	{
+void parcoursInfixe(pTree a){
+	if (a != NULL){
 		parcoursInfixe(a->fg);
 		traiter(a);
 		parcoursInfixe(a->fd);
 	}
 }
 
-void parcoursPrefixe(pTree a)
-{
+void parcoursPrefixe(pTree a){
 	// RGD
 	if (a != NULL)
 	{
@@ -80,76 +65,58 @@ void parcoursPrefixe(pTree a)
 	}
 }
 
-void parcoursPostfixe(pTree a)
-{
+void parcoursPostfixe(pTree a){
 	// GrD
-
-	if (a != NULL)
-	{
+	if (a != NULL){
 		parcoursPostfixe(a->fg);
 		traiter(a);
 		parcoursPostfixe(a->fd);
 	}
 }
 
-int min2(int a, int b, int c)
-{
-	if (a <= b && a <= c)
-	{
+int min2(int a, int b, int c){
+	if (a <= b && a <= c){
 		return a;
 	}
-	else if (b <= a && b <= c)
-	{
+	else if (b <= a && b <= c){
 		return b;
 	}
-	else
-	{
+	else{
 		return c;
 	}
 }
 
-int max(int a, int b)
-{
-	if (a >= b)
-	{
+int max(int a, int b){
+	if (a >= b){
 		return a;
 	}
-	else
-	{
+	else{
 		return b;
 	}
 }
 
-int min(int a, int b)
-{
-	if (a <= b)
-	{
+int min(int a, int b){
+	if (a <= b){
 		return a;
 	}
-	else
-	{
+	else{
 		return b;
 	}
 }
 
-int max2(int a, int b, int c)
-{
-	if (a >= b && a >= c)
-	{
+int max2(int a, int b, int c){
+	if (a >= b && a >= c){
 		return a;
 	}
-	else if (b >= a && b >= c)
-	{
+	else if (b >= a && b >= c){
 		return b;
 	}
-	else
-	{
+	else{
 		return c;
 	}
 }
 
-pArbre rotLeft(pArbre a)
-{
+pArbre rotLeft(pArbre a){
 	pTree pivot;
 	int eq_a;
 	int eq_p;
@@ -164,8 +131,7 @@ pArbre rotLeft(pArbre a)
 	return pivot;
 }
 
-pArbre rotRight(pArbre a)
-{
+pArbre rotRight(pArbre a){
 	pTree pivot;
 	int eq_a;
 	int eq_p;
@@ -180,49 +146,39 @@ pArbre rotRight(pArbre a)
 	return pivot;
 }
 
-pArbre doubleRotLeft(pTree a)
-{
+pArbre doubleRotLeft(pTree a){
 	a->fd = rotRight(a->fd);
 	return rotLeft(a);
 }
 
-pArbre doubleRotRight(pTree a)
-{
+pArbre doubleRotRight(pTree a){
 	a->fg = rotLeft(a->fg);
 	return rotRight(a);
 }
 
 
-pArbre insertAVL(pArbre a, int e, int *h)
-{
-	if (a == NULL)
-	{
+pArbre insertAVL(pArbre a, int e, int *h){
+	if (a == NULL){
 		*h = 1;
 		return createTree(e);
 	}
-	else if (e < a->elmt)
-	{
+	else if (e < a->elmt){
 		a->fg = insertAVL(a->fg, e, h);
 		*h = -*h;
 	}
-	else if (e > a->elmt)
-	{
+	else if (e > a->elmt){
 		a->fd = insertAVL(a->fd, e, h);
 	}
-	else
-	{
+	else{
 		*h = 0;
 		return a;
 	}
-	if (*h != 0)
-	{
+	if (*h != 0){
 		a->eq = a->eq + *h;
-		if (a->eq == 0)
-		{
+		if (a->eq == 0){
 			*h = 0;
 		}
-		else
-		{
+		else{
 			*h = 1;
 		}
 	}
@@ -230,90 +186,43 @@ pArbre insertAVL(pArbre a, int e, int *h)
 }
 
 
-pArbre insert(pTree root, int data)
-
-{
-
-	if (root == NULL)
-
-	{
-
+pArbre insert(pTree root, int data){
+	if (root == NULL){
 		pTree new_node = createTree(data);
-
-		if (new_node == NULL)
-
-		{
-
+		if (new_node == NULL){
 			return NULL;
 		}
-
 		root = new_node;
 	}
-
-	else if (data > root->elmt)
-
-	{
-
+	else if (data > root->elmt){
 		// insert the new node to the right
-
 		root->fd = insert(root->fd, data);
-
 		// tree is unbalanced, then rotate it
-
 		if (root->eq == -2)
-
-		{
-
-			if (data > root->fd->elmt)
-
-			{
-
+		}
+			if (data > root->fd->elmt){
 				root = rotLeft(root);
 			}
-
-			else
-
-			{
-
+			else{
 				root->fd = rotRighte(root->fd);
-
 				root = rotLeft(root);
 			}
 		}
 	}
-
-	else
-
-	{
-
+	else{
 		// insert the new node to the left
-
 		root->fg = insert(root->fg, data);
-
 		// tree is unbalanced, then rotate it
-
-		if (root->eq == 2)
-
-		{
-
-			if (data < root->fg->elmt)
-
-			{
-
+		if (root->eq == 2){
+			if (data < root->fg->elmt){
 				root = rotRight(root);
 			}
-
-			else
-
-			{
-
+			else{
 				root->fg = rotLeft(root->fg);
-
 				root = rotRight(root);
 			}
 		}
 	}
-
 	return root;
 }
 
