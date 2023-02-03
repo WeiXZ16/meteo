@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SPACE puts ("\n")
 
 typedef struct abr{
 	int elmt;
