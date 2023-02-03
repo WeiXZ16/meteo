@@ -4,8 +4,8 @@
 
 typedef struct tree{
 	int elmt;
-	struct tree *fg;
-	struct tree *fd;
+	struct tree *lc;
+	struct tree *rc;
 	int eq;
 }Tree;
 
@@ -15,8 +15,8 @@ pArbre createTree(int a){
 		exit(1);
 	}
 	pnew->elmt = a;
-	pnew->fg = NULL;
-	pnew->fd = NULL;
+	pnew->lc = NULL;
+	pnew->rc = NULL;
 	pnew->eq = 0;
 	return pnew;
 }
@@ -25,52 +25,49 @@ void addLeftChild(pTree a, int e){
 	if (a == NULL){
 		exit(1);
 	}
-	a->fg = createTree(e);
-	if (a->fg == NULL){
+	a->lc = createTree(e);
+	if (a->lc == NULL){
 		exit(2);
 	}
 	a->eq -= 1;
 }
 
-void addRightChildt(pArbre a, int e){
+void addRightChildt(pTree a, int e){
 	if (a == NULL){
 		exit(1);
 	}
-	a->fd = creatTree(e);
-	if (a->fd == NULL){
+	a->rc = creatTree(e);
+	if (a->rc == NULL){
 		exit(2);
 	}
 	a->eq += 1;
 }
 
-void traiter(pTree a){
+void process(pTree a){
 	printf("%d,", a->elmt);
 }
 
-void parcoursInfixe(pTree a){
+void infix(pTree a){
 	if (a != NULL){
-		parcoursInfixe(a->fg);
-		traiter(a);
-		parcoursInfixe(a->fd);
+		infix(a->lc);
+		process(a);
+		infix(a->rc);
 	}
 }
 
-void parcoursPrefixe(pTree a){
-	// RGD
-	if (a != NULL)
-	{
-		traiter(a);
-		parcoursPrefixe(a->fg);
-		parcoursPrefixe(a->fd);
+void prefix(pTree a){
+	if (a != NULL){
+		process(a);
+		prefix(a->lc);
+		prefix(a->rc);
 	}
 }
 
-void parcoursPostfixe(pTree a){
-	// GrD
+void postfix(pTree a){
 	if (a != NULL){
-		parcoursPostfixe(a->fg);
-		traiter(a);
-		parcoursPostfixe(a->fd);
+		postfix(a->lc);
+		process(a);
+		postfix(a->rc);
 	}
 }
 
@@ -120,9 +117,9 @@ pArbre rotLeft(pArbre a){
 	pTree pivot;
 	int eq_a;
 	int eq_p;
-	pivot = a->fd;
-	a->fd = pivot->fg;
-	pivot->fg = a;
+	pivot = a->rc;
+	a->rc = pivot->lc;
+	pivot->lc = a;
 	eq_a = a->eq;
 	eq_p = pivot->eq;
 	a->eq = eq_a - max(eq_p, 0) - 1;
@@ -135,9 +132,9 @@ pArbre rotRight(pArbre a){
 	pTree pivot;
 	int eq_a;
 	int eq_p;
-	pivot = a->fg;
-	a->fg = pivot->fd;
-	pivot->fd = a;
+	pivot = a->lc;
+	a->lc = pivot->rc;
+	pivot->rc = a;
 	eq_a = a->eq;
 	eq_p = pivot->eq;
 	a->eq = eq_a - min(eq_p, 0) + 1;
@@ -147,12 +144,12 @@ pArbre rotRight(pArbre a){
 }
 
 pArbre doubleRotLeft(pTree a){
-	a->fd = rotRight(a->fd);
+	a->rc = rotRight(a->rc);
 	return rotLeft(a);
 }
 
 pArbre doubleRotRight(pTree a){
-	a->fg = rotLeft(a->fg);
+	a->lc = rotLeft(a->lc);
 	return rotRight(a);
 }
 
@@ -163,11 +160,11 @@ pArbre insertAVL(pArbre a, int e, int *h){
 		return createTree(e);
 	}
 	else if (e < a->elmt){
-		a->fg = insertAVL(a->fg, e, h);
+		a->lc = insertAVL(a->lc, e, h);
 		*h = -*h;
 	}
 	else if (e > a->elmt){
-		a->fd = insertAVL(a->fd, e, h);
+		a->rc = insertAVL(a->rc, e, h);
 	}
 	else{
 		*h = 0;
@@ -196,29 +193,29 @@ pArbre insert(pTree root, int data){
 	}
 	else if (data > root->elmt){
 		// insert the new node to the right
-		root->fd = insert(root->fd, data);
+		root->rc = insert(root->rc, data);
 		// tree is unbalanced, then rotate it
 		if (root->eq == -2)
 		}
-			if (data > root->fd->elmt){
+			if (data > root->rc->elmt){
 				root = rotLeft(root);
 			}
 			else{
-				root->fd = rotRighte(root->fd);
+				root->rc = rotRighte(root->rc);
 				root = rotLeft(root);
 			}
 		}
 	}
 	else{
 		// insert the new node to the left
-		root->fg = insert(root->fg, data);
+		root->lc = insert(root->lc, data);
 		// tree is unbalanced, then rotate it
 		if (root->eq == 2){
-			if (data < root->fg->elmt){
+			if (data < root->lc->elmt){
 				root = rotRight(root);
 			}
 			else{
-				root->fg = rotLeft(root->fg);
+				root->lc = rotLeft(root->lc);
 				root = rotRight(root);
 			}
 		}
